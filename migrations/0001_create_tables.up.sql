@@ -1,0 +1,43 @@
+CREATE TABLE geonames.geonames (
+  geonameid      SERIAL PRIMARY KEY,
+  name           VARCHAR(200),
+  asciiname      VARCHAR(200),
+  alternatenames VARCHAR(10000),
+  latitude       FLOAT,
+  longitude      FLOAT,
+  fclass         CHAR(1),
+  fcode          VARCHAR(10),
+  country        VARCHAR(2)       ,
+  cc2            VARCHAR(100),
+  admin1         VARCHAR(20),
+  admin2         VARCHAR(80),
+  admin3         VARCHAR(20),
+  admin4         VARCHAR(20),
+  population     BIGINT,
+  elevation      INTEGER,
+  gtopo30        INTEGER,
+  timezone       VARCHAR(40),
+  moddate        DATE
+);
+
+create table geonames.countryinfo (
+  iso_alpha2      CHAR(2) PRIMARY KEY,
+  iso_alpha3      CHAR(3),
+  iso_numeric     INTEGER,
+  fips_code       VARCHAR(3),
+  name            VARCHAR(200),
+  capital         VARCHAR(200),
+  areainsqkm      DOUBLE PRECISION,
+  population      INTEGER,
+  continent       VARCHAR(2),
+  tld             VARCHAR(10),
+  currencycode    VARCHAR(3),
+  currencyname    VARCHAR(20),
+  phone           VARCHAR(20),
+  postalcode      VARCHAR(100),
+  postalcoderegex VARCHAR(200),
+  languages       VARCHAR(200),
+  geonameid       INTEGER,
+  neighbors       VARCHAR(50),
+  equivfipscode   VARCHAR(3)
+);
