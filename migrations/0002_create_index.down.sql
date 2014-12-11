@@ -1,5 +1,6 @@
 DROP INDEX geonames_country_idx;
 DROP INDEX geonames_fclass_idx;
+DROP INDEX geonames_name_idx; 
 
 DROP INDEX countryinfo_iso_alpha2_idx;
 DROP INDEX countryinfo_iso_alpha3_idx;
