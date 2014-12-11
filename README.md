@@ -118,8 +118,6 @@ create table geonames.countryinfo (
   neighbors       VARCHAR(50),
   equivfipscode   VARCHAR(3)
 );
-
-);
 ```
 
 ### Useful resources:
