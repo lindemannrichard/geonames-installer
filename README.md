@@ -73,3 +73,8 @@ So...
 ### Done.
 
 Now you have basic geonames db up and running.
+
+### Useful resources:
+
+* [download.geonames.org](http://download.geonames.org/export/dump/)
+* [github.com/colemanm/gazetteer/](https://raw.githubusercontent.com/colemanm/gazetteer/master/docs/geonames_postgis_import.md)
