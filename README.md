@@ -37,8 +37,8 @@ So...
 
 ### Clone a geonames
 
-    git clone https://github.com/lindemannrichard/geonames.git
-    cd geonames
+    git clone https://github.com/lindemannrichard/geonames-installer.git
+    cd geonames-installer
 
 ### Download geonames data from server
 
