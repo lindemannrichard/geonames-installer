@@ -1,7 +1,7 @@
 # Bootstrap tutor to get geonames.org data into your Postgres fast!
 
 This set of instructions and utilities was born during experiments with
-[geonames.org](http://download.geonames.org/export/dump/) and getting it to my postgres instance.
+[geonames.org](http://download.geonames.org/export/dump/) and getting it into my postgres instance.
 
 This set is based on the following assumptions:
 
