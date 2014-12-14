@@ -1,75 +1,46 @@
-# Bootstrap tutor to get geonames.org data into your Postgres fast!
+## Bootstrap geonames.org into your Postgres fast!
 
 This set of instructions and utilities was born during experiments with
 [geonames.org](http://download.geonames.org/export/dump/) and getting it into my postgres instance.
 
-This set is based on the following assumptions:
+### What installer will do:
 
-* There shall be a dedicated schema `geonames` to hold geonames.org data.
-* You shall have admin access to postgres instance, or know someone who has it.
+* Create `geonames` schema.
+* Create `geonamesadmin` user and set him as owner of `geonames` schema.
+* Create tables `geonames` and `companyinfo`.
+* Import data from geonames database files.
+* Create indecies.
 
-So...
+### Download geonames data from server:
 
-### Install the tool
+```bash
+mkdir /tmp/geonames ; cd /tmp/geonames
+curl http://download.geonames.org/export/dump/countryInfo.txt | sed '/^#/ d' > countryInfo.txt
+curl http://download.geonames.org/export/dump/allCountries.zip | bsdtar -xvf-
+```
 
- [migrate](github.com/mattes/migrate
-) tool is used to keep db updated. It requires golang to run. Get [here](http://golang.org/doc/install).
+### Download and run installer:
 
-    $ go get github.com/mattes/migrate
+* You should have rights to create schemas and tables. Please replace `pgadmin` with your login name. 
+* Replace `targetdb` with a db you wish to install to.
+* You might have to supply the password via `-W` if not done on the localhost:
 
-    $ migrate --help
-    usage: migrate [-path=<path>] -url=<url> <command> [<args>]
+```bash
+curl -O https://raw.githubusercontent.com/lindemannrichard/geonames-installer/master/installer.sql
+psql -h localhost -p 5432 -d targetdb -U pgadmin -f installer.sql
+```
 
-    Commands:
-       create <name>  Create a new migration
-       up             Apply all -up- migrations
-       down           Apply all -down- migrations
-       reset          Down followed by Up
-       redo           Roll back most recent migration, then apply it again
-       version        Show current migration version
-       migrate <n>    Apply migrations -n|+n
-       goto <v>       Migrate to version v
-       help           Show this help
+### Cleanup:
 
-       '-path' defaults to current working directory.    
+In case you want to remove everything, just drop `geonames` schema and user
+`geonamesadmin` or use this script
 
-### Clone a geonames
+```bash
+curl -O https://raw.githubusercontent.com/lindemannrichard/geonames-installer/master/cleanup.sql
+psql -h localhost -p 5432 -d targetdb -U pgadmin -f cleanup.sql
+```
 
-    git clone https://github.com/lindemannrichard/geonames-installer.git
-    cd geonames-installer
-
-### Download geonames data from server
-
-    curl http://download.geonames.org/export/dump/countryInfo.txt | sed '/^#/ d' > countryInfo.txt
-    curl http://download.geonames.org/export/dump/allCountries.zip | bsdtar -xvf-
-
-### Setup a dedicated role and schema in postgres
-
-    CREATE ROLE geonamesuser; 
-    CREATE SCHEMA IF NOT EXISTS geonames;
-    GRANT USAGE ON SCHEMA geonames TO geonamesuser;
-
-### Create tables!
-
-    migrate -path="./migrations" -url="postgres://geonames@localhost:5432/test?sslmode=disable" goto 1
-
-**NOTE:** Replace path to postgres instance with your own.
-
-### Import data
-
-    psql -U geonames -d test -f import.sql
-
-**NOTE:** Replace database `test` with your target database.
-
-### Create indecies!
-
-    migrate -path="./migrations" -url="postgres://geonames@localhost:5432/test?sslmode=disable" up
-
-**NOTE:** Replace path to postgres instance with your own.
-
-### Done.
-
-Now you have basic geonames db up and running:
+### SQL schema:
 
 ```sql
 CREATE TABLE geonames.geonames (
@@ -119,5 +90,6 @@ create table geonames.countryinfo (
 
 ### Useful resources:
 
+* [Feature Codes](http://www.geonames.org/export/codes.html) - (fclass, fcode fields)
 * [download.geonames.org](http://download.geonames.org/export/dump/)
 * [github.com/colemanm/gazetteer/](https://raw.githubusercontent.com/colemanm/gazetteer/master/docs/geonames_postgis_import.md)
