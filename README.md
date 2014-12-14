@@ -7,8 +7,6 @@ This set is based on the following assumptions:
 
 * There shall be a dedicated schema `geonames` to hold geonames.org data.
 * You shall have admin access to postgres instance, or know someone who has it.
-* Your postgres shall have a dedicated user to manage the migrations of
-  geonames data.
 
 So...
 
@@ -47,10 +45,9 @@ So...
 
 ### Setup a dedicated role and schema in postgres
 
-    CREATE USER geonames; 
-    ALTER USER geonames SET search_path = geonames;
+    CREATE ROLE geonamesuser; 
     CREATE SCHEMA IF NOT EXISTS geonames;
-    ALTER SCHEMA geonames OWNER to geonames;
+    GRANT USAGE ON SCHEMA geonames TO geonamesuser;
 
 ### Create tables!
 
